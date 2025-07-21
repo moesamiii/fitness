@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'register_page.dart';
-import 'home_page.dart';
+import 'main_screen.dart'; // ✅ Make sure this file exists in lib/
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,9 +21,10 @@ class _LoginPageState extends State<LoginPage> {
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
+      // ✅ Go to MainScreen on success
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const HomePage()),
+        MaterialPageRoute(builder: (_) => const MainScreen()),
       );
     } on FirebaseAuthException catch (e) {
       setState(() => error = e.message);
@@ -38,12 +39,25 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            TextField(controller: emailController, decoration: const InputDecoration(labelText: 'Email')),
-            TextField(controller: passwordController, decoration: const InputDecoration(labelText: 'Password'), obscureText: true),
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(labelText: 'Email'),
+            ),
+            TextField(
+              controller: passwordController,
+              decoration: const InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
             const SizedBox(height: 12),
-            ElevatedButton(onPressed: _login, child: const Text('Login')),
+            ElevatedButton(
+              onPressed: _login,
+              child: const Text('Login'),
+            ),
             TextButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RegisterPage())),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const RegisterPage()),
+              ),
               child: const Text("Don't have an account? Register"),
             ),
             if (error != null) ...[
